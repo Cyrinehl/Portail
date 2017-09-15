@@ -1,0 +1,238 @@
+﻿@using DataAccess.Insert
+@*@model PagedList<MetricViewModel>*@
+@*@using X.PagedList;*@
+
+@using Microsoft.AspNetCore.Http.Extensions;
+
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+
+@using PagedList.Core.Mvc;
+@model List<MetricViewModel>
+
+  
+<div> 
+
+
+    @{
+        string prevDisabled = "active";
+        string nextDisabled = "active";
+
+        if ((int)ViewData["PageIndex"] == 1)
+        {
+            prevDisabled = "disabled";
+
+        }
+
+        if ((int)ViewData["PageIndex"] == (int)ViewData["TotalPages"])
+        {
+            nextDisabled = "disabled";
+
+        }
+
+        byte[] SortString;
+        string result = "";
+        HttpContextAccessor.HttpContext.Session.TryGetValue("SortOrder", out SortString);
+        if (SortString != null)
+        {
+            result = System.Text.Encoding.UTF8.GetString(SortString);
+
+        }
+
+
+        byte[] SearchString;
+        string resultSearch = "";
+        HttpContextAccessor.HttpContext.Session.TryGetValue("CurrentFilter", out SearchString);
+        if (SearchString != null)
+        {
+            resultSearch = System.Text.Encoding.UTF8.GetString(SearchString);
+
+        }
+
+
+        byte[] SearchStringDirection;
+        string resultSearchDirection = "";
+        HttpContextAccessor.HttpContext.Session.TryGetValue("CurrentFilterDirection", out SearchStringDirection);
+        if (SearchStringDirection != null)
+        {
+            resultSearchDirection = System.Text.Encoding.UTF8.GetString(SearchStringDirection);
+
+        }
+
+
+        byte[] SearchStringTeam;
+        string resultSearchTeam = "";
+        HttpContextAccessor.HttpContext.Session.TryGetValue("CurrentFilterTeam", out SearchStringTeam);
+        if (SearchStringDirection != null)
+        {
+            resultSearchTeam = System.Text.Encoding.UTF8.GetString(SearchStringTeam);
+
+        }
+
+
+        string Empty = "";
+
+
+    }
+
+
+
+
+    <form asp-action="Index" method="get">
+        <div class="form-actions no-color">
+            <p>
+                Find by Service name: <input type="text" name="SearchString" value="@ViewData["currentFilter"]" />
+                <input type="submit" value="Search" class="btn btn-default" /> 
+                <a asp-action="Index">Back to Full List</a>            
+            </p>
+        </div>
+    </form>
+
+    
+    
+    <form asp-action="Index" method="get">
+        <div class="form-actions no-color">
+            <p>
+                Find by Direction name: <input type="text" name="SearchStringDirection" value="@ViewData["currentFilterDirection"]" />
+                <input type="submit" value="Search" class="btn btn-default" />
+            </p>
+        </div>
+    </form>
+    
+
+    <form asp-action="Index" method="get">
+        <div class="form-actions no-color">
+            <p>
+                Find by Team name: <input type="text" name="SearchStringTeam" value="@ViewData["currentFilterTeam"]" />
+                <input type="submit" value="Search" class="btn btn-default" />
+            </p>
+        </div>
+    </form>
+        
+       
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>
+                        <a asp-action="Index" asp-route-sortOrder="@ViewData["NameSortParm"]" asp-route-searchString="@resultSearch"  asp-route-searchStringDirection="@resultSearchDirection"   asp-route-searchStringTeam ="@resultSearchTeam"  >Services</a>
+                    </th>
+                    
+                    <th>
+                        <a asp-action="Index" asp-route-sortOrder="@ViewData["DirectionSortParm"]" asp-route-searchString="@resultSearch"  asp-route-searchStringDirection="@resultSearchDirection" asp-route-searchStringTeam ="@resultSearchTeam"       >Directions</a>
+                    </th>
+                    
+                    <th>
+                        <a asp-action="Index" asp-route-sortOrder="@ViewData["TeamSortParm"]"  asp-route-searchString="@resultSearch" asp-route-searchStringDirection="@resultSearchDirection" asp-route-searchStringTeam ="@resultSearchTeam"        >Teams</a>
+                    </th>
+                    <th>
+                        Quality Profile
+                    </th>
+
+                    <th >
+                        <a asp-action="Index" asp-route-sortOrder="@ViewData["CoverageSortParm"]"    asp-route-searchString="@resultSearch" asp-route-searchStringDirection="@resultSearchDirection"  asp-route-searchStringTeam ="@resultSearchTeam"        >Coverage</a>
+                    </th>
+                   
+                    <th>
+                        <a asp-action="Index" asp-route-sortOrder="@ViewData["NumberLinesSortParm"]"  asp-route-searchString="@resultSearch" asp-route-searchStringDirection="@resultSearchDirection"  asp-route-searchStringTeam ="@resultSearchTeam"       >Number of Lines</a>
+                    </th>
+                    
+                    <th>
+                        <a asp-action="Index" asp-route-sortOrder="@ViewData["TotalTestsSortParm"]" asp-route-searchString="@resultSearch" asp-route-searchStringDirection="@resultSearchDirection" asp-route-searchStringTeam ="@resultSearchTeam"        >total Tests</a>
+                    </th>
+                    
+                    <th>
+                        <a asp-action="Index" asp-route-sortOrder="@ViewData["PassedTestsSortParm"]" asp-route-searchString="@resultSearch"  asp-route-searchStringDirection="@resultSearchDirection"  asp-route-searchStringTeam ="@resultSearchTeam"      >Passed Tests</a>
+                    </th>
+                    
+                    <th>
+                        <a asp-action="Index" asp-route-sortOrder="@ViewData["BugsSortParm"]" asp-route-searchString="@resultSearch"  asp-route-searchStringDirection="@resultSearchDirection" asp-route-searchStringTeam ="@resultSearchTeam"    >Bugs</a>
+                    </th>
+                    
+                    <th>
+                        <a asp-action="Index" asp-route-sortOrder="@ViewData["CodeSmellsSortParm"]" asp-route-searchString="@resultSearch"  asp-route-searchStringDirection="@resultSearchDirection" asp-route-searchStringTeam ="@resultSearchTeam"    >Code Smells</a>
+                    </th>
+                    
+                    <th>
+                        <a asp-action="Index" asp-route-sortOrder="@ViewData["VulnerabilitiesSortParm"]" asp-route-searchString="@resultSearch"  asp-route-searchStringDirection="@resultSearchDirection" asp-route-searchStringTeam ="@resultSearchTeam"    >Vulnerabilities</a>
+                    </th>
+                    
+                    <th>
+                        <a asp-action="Index" asp-route-sortOrder="@ViewData["DuplicationSortParm"]" asp-route-searchString="@resultSearch"  asp-route-searchStringDirection="@resultSearchDirection" asp-route-searchStringTeam ="@resultSearchTeam"       >Duplication</a>
+                    </th>
+                   
+                    <th>
+                    <a asp-action="Index" asp-route-sortOrder="@ViewData["ComplexitySortParm"]" asp-route-searchString="@resultSearch" asp-route-searchStringDirection="@resultSearchDirection" asp-route-searchStringTeam ="@resultSearchTeam"        >Complexity</a>
+                    </th>
+                    
+                    <th>
+                    <a asp-action="Index" asp-route-sortOrder="@ViewData["DocumentationSortParm"]" asp-route-searchString="@resultSearch" asp-route-searchStringDirection="@resultSearchDirection"  asp-route-searchStringTeam ="@resultSearchTeam"       >Documentation</a>
+                    </th>
+                  
+                </tr>               
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+
+                    
+
+                <tr>
+                    <td>@Html.DisplayFor(modelItem => item.ServiceName)</td>
+                    <td>@Html.DisplayFor(modelItem => item.DirectionName)</td>
+                    <td>@Html.DisplayFor(modelItem => item.TeamName)</td>
+                    <td>@Html.DisplayFor(modelItem => item.ServiceProfile)</td>
+                    <td align="right">@String.Concat(item.Coverage.ToString(), "%")</td>
+                    <td align="right">@Html.DisplayFor(modelItem => item.Size)</td>
+                    <td align="right">@Html.DisplayFor(modelItem => item.TotalTests)</td>
+                    <td align="right">@Html.DisplayFor(modelItem => item.PassedTests)</td>
+                    <td align="right">@Html.DisplayFor(modelItem => item.NumberBugs)</td>
+                    <td align="right">@Html.DisplayFor(modelItem => item.NumberCodeSmells)</td>
+                    <td align="right">@Html.DisplayFor(modelItem => item.NumberVulnerabilities)</td>
+                    <td align="right">@String.Concat(item.Duplication.ToString(), "%")</td>
+                    <td align="right">@Html.DisplayFor(modelItem => item.Complexity)</td>
+                    <td align="right">@String.Concat(item.Documentation.ToString(), "%")</td>
+                </tr>
+                }
+            </tbody>
+
+        </table>
+
+   
+   
+
+
+    <a asp-action="Index"     
+           
+       asp-route-searchString="@resultSearch"
+       asp-route-searchStringDirection="@resultSearchDirection"
+       asp-route-searchStringTeam="@resultSearchTeam"
+        asp-route-sortOrder="@result"    
+        asp-route-page="@((int)ViewData["PageIndex"] - 1)"   
+       
+       class="btn btn-default @prevDisabled">
+        Previous
+    </a>
+    
+    <a asp-action="Index"
+       
+       asp-route-searchString="@resultSearch"
+       asp-route-searchStringDirection="@resultSearchDirection"
+       asp-route-searchStringTeam="@resultSearchTeam"
+       asp-route-sortOrder= "@result"  
+       asp-route-page="@((int)ViewData["PageIndex"] + 1)"
+
+       class="btn btn-default @nextDisabled ">
+        Next
+    </a>
+
+
+    <a asp-action="GenerateExcel"    
+       class="btn btn-default">
+        Generate Excel
+    </a>
+
+
+    <a href="~/tmp/Export.csv" target="_blank">Download</a>
+    
+
+</div>
+

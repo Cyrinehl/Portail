@@ -1,0 +1,45 @@
+﻿@using DataAccess.Insert
+@using Microsoft.AspNetCore.Http.Extensions;
+
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+
+@using PagedList.Core.Mvc;
+@model DevelopperMetrics 
+
+
+
+
+<form asp-action="Index" method="get">
+    <div class="form-actions no-color">
+        <p>
+            Login: <input type="text" name="DevelopperLogin" value="@ViewData["DevelopperLogin"]" />
+            <input type="submit" value="Search" class="btn btn-default" />
+        </p>
+    </div>
+</form>
+
+
+
+
+<div>
+        @{
+            int NbIssues;
+            if (Model != null)
+            {
+
+                NbIssues = Model.NbIssues;
+                <h3 style="color:red;text-align:left">Total issues: @NbIssues</h3>
+
+                foreach (var item in Model.IssuesPerService)
+                {
+                    <h2 text-align:left">@item.NbIssues Issues in @item.ServiceName </h2>
+                }
+
+
+            }
+
+
+
+        }
+
+</div>

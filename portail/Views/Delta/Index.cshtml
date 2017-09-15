@@ -1,0 +1,295 @@
+﻿@using DataAccess.Insert
+@using Microsoft.AspNetCore.Http.Extensions;
+
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+
+@using PagedList.Core.Mvc;
+@model List<MetricViewModel>
+
+
+
+    @{
+        string prevDisabled = "active";
+        string nextDisabled = "active";
+
+        if ((int)ViewData["PageIndex"] == 1)
+        {
+            prevDisabled = "disabled";
+
+        }
+
+        if ((int)ViewData["PageIndex"] == (int)ViewData["TotalPages"])
+        {
+            nextDisabled = "disabled";
+
+        }
+
+        byte[] SortString;
+        string result = "";
+        HttpContextAccessor.HttpContext.Session.TryGetValue("SortOrderDelta", out SortString);
+        if (SortString != null)
+        {
+            result = System.Text.Encoding.UTF8.GetString(SortString);
+
+        }
+
+        byte[] deltaChoice;
+        string resultDelta = "";
+        HttpContextAccessor.HttpContext.Session.TryGetValue("deltaChoice", out deltaChoice);
+        if (deltaChoice != null)
+        {
+            resultDelta = System.Text.Encoding.UTF8.GetString(deltaChoice);
+
+        }
+
+
+        byte[] SearchString;
+        string resultSearch = "";
+        HttpContextAccessor.HttpContext.Session.TryGetValue("CurrentFilterDelta", out SearchString);
+        if (SearchString != null)
+        {
+            resultSearch = System.Text.Encoding.UTF8.GetString(SearchString);
+
+        }
+
+
+        byte[] SearchStringDirection;
+        string resultSearchDirection = "";
+        HttpContextAccessor.HttpContext.Session.TryGetValue("CurrentFilterDirectionDelta", out SearchStringDirection);
+        if (SearchStringDirection != null)
+        {
+            resultSearchDirection = System.Text.Encoding.UTF8.GetString(SearchStringDirection);
+
+        }
+
+
+        byte[] SearchStringTeam;
+        string resultSearchTeam = "";
+        HttpContextAccessor.HttpContext.Session.TryGetValue("CurrentFilterTeamDelta", out SearchStringTeam);
+        if (SearchStringDirection != null)
+        {
+            resultSearchTeam = System.Text.Encoding.UTF8.GetString(SearchStringTeam);
+
+        }
+
+
+        string Empty = "";
+
+
+    }
+
+    
+
+
+    <form asp-action="Index" method="get">
+        <div class="form-actions no-color">
+            <p>
+                Find by Service name: <input type="text" name="SearchString" value="@ViewData["currentFilter"]" />
+                <input type="submit" value="Search" class="btn btn-default" />
+                <a asp-action="Index">Back to Full List</a>
+            </p>
+        </div>
+    </form>
+
+
+
+    <form asp-action="Index" method="get">
+        <div class="form-actions no-color">
+            <p>
+                Find by Direction name: <input type="text" name="SearchStringDirection" value="@ViewData["currentFilterDirection"]" />
+                <input type="submit" value="Search" class="btn btn-default" />
+            </p>
+        </div>
+    </form>
+
+
+    <form asp-action="Index" method="get">
+        <div class="form-actions no-color">
+            <p>
+                Find by Direction name: <input type="text" name="SearchStringTeam" value="@ViewData["currentFilterTeam"]" />
+                <input type="submit" value="Search" class="btn btn-default" />
+            </p>
+        </div>
+    </form>
+   
+
+             
+            
+            <select id="selectOpts" onchange="toto()">
+                <option value="une semaine">1 semaine</option>
+                <option value="deux semaines">2 semaines</option>
+                <option value="un mois">un mois</option>
+                <option value="un trimestre">un trimestre</option>
+            </select> 
+
+            <script type="text/javascript">
+               function toto() {
+                   var elt = document.getElementById("selectOpts");
+                   var toGet = elt.value;
+                   var link = document.getElementById("monLien");
+                   var linkValue;
+                   if (link.dataset["href"]) {
+                       linkValue = link.dataset["href"];
+                   } else {
+                       linkValue = link.href;
+                       link.dataset["href"] = link.href;
+                   }
+                   link.href = linkValue + "?deltaChoice=" + elt.value;
+                   
+               }
+            
+            </script>
+         
+    
+<a asp-action="Index" id="monLien">Get Delta</a>
+       
+
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>
+                        <a asp-action="Index" asp-route-sortOrder="@ViewData["NameSortParm"]" asp-route-deltaChoice="@resultDelta" asp-route-searchString="@resultSearch" asp-route-searchStringDirection="@resultSearchDirection" asp-route-searchStringTeam="@resultSearchTeam">Services</a>
+                    </th>
+
+                    <th>
+                        <a asp-action="Index" asp-route-sortOrder="@ViewData["DirectionSortParm"]" asp-route-deltaChoice="@resultDelta" asp-route-searchString="@resultSearch" asp-route-searchStringDirection="@resultSearchDirection" asp-route-searchStringTeam="@resultSearchTeam">Directions</a>
+                    </th>
+
+                    <th>
+                        <a asp-action="Index" asp-route-sortOrder="@ViewData["TeamSortParm"]" asp-route-deltaChoice="@resultDelta" asp-route-searchString="@resultSearch" asp-route-searchStringDirection="@resultSearchDirection" asp-route-searchStringTeam="@resultSearchTeam">Teams</a>
+                    </th>
+                    <th>
+                        Quality Profile
+                    </th>
+
+                    <th>
+                        <a asp-action="Index" asp-route-sortOrder="@ViewData["CoverageSortParm"]" asp-route-deltaChoice="@resultDelta" asp-route-searchString="@resultSearch" asp-route-searchStringDirection="@resultSearchDirection" asp-route-searchStringTeam="@resultSearchTeam">Coverage</a>
+                    </th>
+
+                    <th>
+                        <a asp-action="Index" asp-route-sortOrder="@ViewData["NumberLinesSortParm"]" asp-route-deltaChoice="@resultDelta" asp-route-searchString="@resultSearch" asp-route-searchStringDirection="@resultSearchDirection" asp-route-searchStringTeam="@resultSearchTeam">Number of Lines</a>
+                    </th>
+
+                    <th>
+                        <a asp-action="Index" asp-route-sortOrder="@ViewData["TotalTestsSortParm"]" asp-route-deltaChoice="@resultDelta" asp-route-searchString="@resultSearch" asp-route-searchStringDirection="@resultSearchDirection" asp-route-searchStringTeam="@resultSearchTeam">total Tests</a>
+                    </th>
+
+                    <th>
+                        <a asp-action="Index" asp-route-sortOrder="@ViewData["PassedTestsSortParm"]" asp-route-deltaChoice="@resultDelta" asp-route-searchString="@resultSearch" asp-route-searchStringDirection="@resultSearchDirection" asp-route-searchStringTeam="@resultSearchTeam">Passed Tests</a>
+                    </th>
+
+                    <th>
+                        <a asp-action="Index" asp-route-sortOrder="@ViewData["BugsSortParm"]" asp-route-deltaChoice="@resultDelta" asp-route-searchString="@resultSearch" asp-route-searchStringDirection="@resultSearchDirection" asp-route-searchStringTeam="@resultSearchTeam">Bugs</a>
+                    </th>
+
+                    <th>
+                        <a asp-action="Index" asp-route-sortOrder="@ViewData["CodeSmellsSortParm"]" asp-route-deltaChoice="@resultDelta" asp-route-searchString="@resultSearch" asp-route-searchStringDirection="@resultSearchDirection" asp-route-searchStringTeam="@resultSearchTeam">Code Smells</a>
+                    </th>
+
+                    <th>
+                        <a asp-action="Index" asp-route-sortOrder="@ViewData["VulnerabilitiesSortParm"]" asp-route-deltaChoice="@resultDelta" asp-route-searchString="@resultSearch" asp-route-searchStringDirection="@resultSearchDirection" asp-route-searchStringTeam="@resultSearchTeam">Vulnerabilities</a>
+                    </th>
+
+                    <th>
+                        <a asp-action="Index" asp-route-sortOrder="@ViewData["DuplicationSortParm"]" asp-route-deltaChoice="@resultDelta" asp-route-searchString="@resultSearch" asp-route-searchStringDirection="@resultSearchDirection" asp-route-searchStringTeam="@resultSearchTeam">Duplication</a>
+                    </th>
+
+                    <th>
+                        <a asp-action="Index" asp-route-sortOrder="@ViewData["ComplexitySortParm"]" asp-route-deltaChoice="@resultDelta" asp-route-searchString="@resultSearch" asp-route-searchStringDirection="@resultSearchDirection" asp-route-searchStringTeam="@resultSearchTeam">Complexity</a>
+                    </th>
+
+                    <th>
+                        <a asp-action="Index" asp-route-sortOrder="@ViewData["DocumentationSortParm"]" asp-route-deltaChoice="@resultDelta" asp-route-searchString="@resultSearch" asp-route-searchStringDirection="@resultSearchDirection" asp-route-searchStringTeam="@resultSearchTeam">Documentation</a>
+                    </th>
+
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+
+                    <tr>
+                        <td>@Html.DisplayFor(modelItem => item.ServiceName)</td>
+                        <td>@Html.DisplayFor(modelItem => item.DirectionName)</td>
+                        <td>@Html.DisplayFor(modelItem => item.TeamName)</td>
+                        <td>@Html.DisplayFor(modelItem => item.ServiceProfile)</td>
+                        <td align="right" style="background-color:@GetColor(item.Coverage)">@String.Concat(item.Coverage.ToString(), "%")</td>
+                        <td align="right">@Html.DisplayFor(modelItem => item.Size)</td>
+                        <td align="right" style="background-color:@GetColor(item.TotalTests)">@Html.DisplayFor(modelItem => item.TotalTests)</td>
+                        <td align="right" style="background-color:@GetColor(item.PassedTests)">@Html.DisplayFor(modelItem => item.PassedTests)</td>
+                        <td align="right" style="background-color:@GetColorInv(item.NumberBugs)">@Html.DisplayFor(modelItem => item.NumberBugs)</td>
+                        <td align="right" style="background-color:@GetColorInv(item.NumberCodeSmells)">@Html.DisplayFor(modelItem => item.NumberCodeSmells)</td>
+                        <td align="right" style="background-color:@GetColorInv(item.NumberVulnerabilities)">@Html.DisplayFor(modelItem => item.NumberVulnerabilities)</td>
+                        <td align="right" style="background-color:@GetColorInv(item.Duplication)">@String.Concat(item.Duplication.ToString(), "%")</td>
+                        <td align="right">@Html.DisplayFor(modelItem => item.Complexity)</td>
+                        <td align="right" style="background-color:@GetColor(item.Documentation)">@String.Concat(item.Documentation.ToString(), "%")</td>
+                    </tr>
+                }
+            </tbody>
+
+        </table>
+
+
+
+
+
+        <a asp-action="Index"
+           asp-route-deltaChoice="@resultDelta"
+           asp-route-searchString="@resultSearch"
+           asp-route-searchStringDirection="@resultSearchDirection"
+           asp-route-searchStringTeam="@resultSearchTeam"
+           asp-route-sortOrder="@result"
+           asp-route-page="@((int)ViewData["PageIndex"] - 1)"
+           class="btn btn-default @prevDisabled">
+            Previous
+        </a>
+
+        <a asp-action="Index"
+           asp-route-deltaChoice="@resultDelta"
+           asp-route-searchString="@resultSearch"
+           asp-route-searchStringDirection="@resultSearchDirection"
+           asp-route-searchStringTeam="@resultSearchTeam"
+           asp-route-sortOrder="@result"
+           asp-route-page="@((int)ViewData["PageIndex"] + 1)"
+           class="btn btn-default @nextDisabled ">
+            Next
+        </a>
+
+
+
+
+
+
+@functions{
+
+    public string GetColor(decimal dec)
+    {
+        string Color = null;
+
+        if (dec > 0)
+        {
+            Color = "green";
+        }
+        if (dec < 0)
+        {
+            Color = "red";
+        }
+        return Color;
+    }
+
+    public string GetColorInv(decimal dec)
+    {
+        string Color = null;
+
+        if (dec > 0)
+        {
+            Color = "red";
+        }
+        if (dec < 0)
+        {
+            Color = "green";
+        }
+        return Color;
+    }
+
+}  

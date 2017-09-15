@@ -1,0 +1,14 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp1.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Cdiscount.Alm.Sonar.Api.Wrapper.Core\Cdiscount.Alm.Sonar.Api.Wrapper.Core.csproj" />
+    <ProjectReference Include="..\Cdiscount.Alm.Sonar.Api.Wrapper\Cdiscount.Alm.Sonar.Api.Wrapper.csproj" />
+    <ProjectReference Include="..\Cdiscount.TFS.Api\Cdiscount.TFS.Api.csproj" />
+    <ProjectReference Include="..\DataAccess\DataAccess.csproj" />
+  </ItemGroup>
+
+</Project>
