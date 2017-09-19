@@ -223,6 +223,11 @@ namespace portail.Controllers
 
             List<MetricViewModel> allPagebleNumbers = models.Skip((page - 1) * ElementsPerPage).Take(ElementsPerPage).ToList();
 
+            foreach (MetricViewModel MetricViewModel in allPagebleNumbers)
+            {
+                MetricViewModel.ServiceName = MetricViewModel.ServiceName.Replace(" Dev", "");
+            }
+
             return View(allPagebleNumbers);
 
 

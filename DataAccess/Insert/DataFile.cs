@@ -5,6 +5,7 @@ using System.Text;
 using DataAccess.Models;
 using MySql.Data.MySqlClient;
 using System.Data;
+using System.Data.Common;
 
 namespace DataAccess.Insert
 {
@@ -159,6 +160,52 @@ namespace DataAccess.Insert
 
 
 
+        }
+
+        public static void FileUpdate(IConfigurationRoot configuration)
+        {
+            MySqlConnection myConnection = new MySqlConnection(configuration["connectionString"]);
+            myConnection.Open();
+            MySqlConnection myConnectionf = new MySqlConnection(configuration["connectionString"]);
+            myConnectionf.Open();
+
+
+            string queryServices = "SELECT * FROM developper.file";
+
+            MySqlCommand command = new MySqlCommand(queryServices, myConnection);
+
+            DbDataReader reader = command.ExecuteReader();
+
+            while (reader.Read())
+            {
+
+                string GetKey = reader.GetString(2);
+                if (GetKey.StartsWith("Service/Services/"))
+                {
+                    string ServiceName = GetKey.Replace("Service/Services/", "");
+                    int index = ServiceName.IndexOf('/');
+                    if (index != -1)
+                    {
+                        ServiceName = ServiceName.Substring(0, index);
+                        ServiceName = ServiceName + " Dev";
+
+                        int serviceId = DataServiceInformation.GetServiceInformation(ServiceName, myConnectionf);
+                        string queryFile = "UPDATE file SET ServiceID=@ServiceID WHERE FileKey=@FileKey";
+
+                        MySqlCommand commandMetrics = new MySqlCommand(queryFile, myConnectionf);
+                        commandMetrics.Parameters.AddWithValue("@ServiceID", serviceId);
+                        commandMetrics.Parameters.AddWithValue("@FileKey", GetKey);
+
+                        if (serviceId != -1 && serviceId != 0)
+                        {
+                            object result = commandMetrics.ExecuteScalar();
+                        }
+                       
+                    }
+
+                }
+
+            }
         }
 
 

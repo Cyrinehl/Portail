@@ -54,6 +54,7 @@ namespace portail
             }
 
             app.UseSession();
+            app.UseBrowserLink();
 
             app.UseStaticFiles();
 

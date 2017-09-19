@@ -33,8 +33,9 @@
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
-                    <li><a asp-area="" asp-controller="Metric" asp-action="Index">Metric</a></li>   
+                    <li><a asp-area="" asp-controller="Metric" asp-action="Index">Services</a></li>   
                     <li><a asp-area="" asp-controller="Delta" asp-action="Index">Delta</a></li>   
+                    <li><a asp-area="" asp-controller="Developper" asp-action="Index">Developper</a></li>   
                 </ul>
             </div>
         </div>
@@ -69,5 +70,10 @@
     </environment>
 
     @RenderSection("Scripts", required: false)
+    <script>
+$(document).ready(function(){
+    $('[data-toggle="tooltip"]').tooltip();
+});
+    </script>
 </body>
 </html>

@@ -32,6 +32,7 @@ using CommonCore;
 using System.Linq;
 using Cdiscount.Alm.Sonar.Api.Wrapper;
 using Cdiscount.Export;
+using DataAccess.Insert;
 
 namespace Test
 {
@@ -43,7 +44,8 @@ namespace Test
         {
             IConfigurationRoot configuration = GetConfig();
 
-            InsertIntoDatabase.FillTables(configuration);
+            //InsertIntoDatabase.FillTables(configuration);
+            DataFile.FileUpdate(configuration);
             //test.InsertData(configuration);
 
 
@@ -59,7 +61,7 @@ namespace Test
             //TfsVersioncontrolShelvesetsChangesReponse TfsVersioncontrolShelvesetsChangesReponse = TfsApiClient.VersionControl.ShelvesetsChanges(TfsVersionControlShelvesetsChangesArgs, configuration);
 
             //TreatCodeReview.GenerateExcel(configuration);
-          
+
 
             // Generate Excel Files
             //TreatExport.GenerateExcelSilo(configuration);

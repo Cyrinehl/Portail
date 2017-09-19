@@ -55,16 +55,16 @@ namespace CommonCore
             SonarApiClient SonarClient = new SonarApiClient(configuration);
             TfsApiClient TfsApiClient = new TfsApiClient(configuration);
 
-            FillServicesNamesKeys(configuration, SonarClient, TfsApiClient);
-            FillProfiles(configuration, SonarClient);
-            FillServicesMetrics(SonarClient, configuration);
-            FillServicesProfiles(configuration);
+            //FillServicesNamesKeys(configuration, SonarClient, TfsApiClient);
+            //FillProfiles(configuration, SonarClient);
+            //FillServicesMetrics(SonarClient, configuration);
+            //FillServicesProfiles(configuration);
             //FillTablesServiceInformationServiceMetrics(configuration);
             //FillTableServiceBuild(TfsApiClient, configuration);
             //FillTableIssue(SonarClient, configuration);
             FillTablesCodeReview(TfsApiClient, configuration);
             FillTableComment(TfsApiClient, configuration);
-            FillTablechangseset(TfsApiClient, configuration);
+            //FillTablechangseset(TfsApiClient, configuration);
 
         }
 

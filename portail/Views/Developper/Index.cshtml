@@ -4,42 +4,146 @@
 @inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
 
 @using PagedList.Core.Mvc;
-@model DevelopperMetrics 
+@model DevelopperMetrics
 
-
-
-
-<form asp-action="Index" method="get">
-    <div class="form-actions no-color">
-        <p>
-            Login: <input type="text" name="DevelopperLogin" value="@ViewData["DevelopperLogin"]" />
-            <input type="submit" value="Search" class="btn btn-default" />
-        </p>
+<br />
+<div class="row">
+    <div class="col-lg-3"></div>
+    <div class="col-lg-6">
+        <div class="panel panel-success">
+            <div class="panel-heading">
+                <h3 class="panel-title"><span class="glyphicon glyphicon-search"></span> Search user</h3>
+            </div>
+            <div class="panel-body">
+                <form asp-action="Index" method="get">
+                    <div class="row">
+                        <div class="col-lg-8">
+                            <div class="input-group">
+                                <span class="input-group-addon" id="basic-addon1">&#64;</span>
+                                <input type="text" class="form-control" placeholder="Username" name="DevelopperLogin" value="@ViewData["DevelopperLogin"]" aria-describedby="basic-addon1">
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="input-group">
+                                <input type="submit" value="Search" class="btn btn-default" />
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
     </div>
-</form>
-
-
-
-
-<div>
-        @{
-            int NbIssues;
-            if (Model != null)
-            {
-
-                NbIssues = Model.NbIssues;
-                <h3 style="color:red;text-align:left">Total issues: @NbIssues</h3>
-
-                foreach (var item in Model.IssuesPerService)
-                {
-                    <h2 text-align:left">@item.NbIssues Issues in @item.ServiceName </h2>
-                }
-
-
-            }
-
-
-
-        }
-
+    <div class="col-lg-3"></div>
 </div>
+@{
+
+    if (Model != null)
+    {
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title"><span class="glyphicon glyphicon-alert"></span> Issues</h3>
+            </div>
+            <div class="panel-body">
+                <div id="accordion" role="tablist">
+                    <div class="card">
+                        <div class="card-header" role="tab" id="headingOne">
+                            <h5 class="mb-0">
+                                <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                    Total : @Model.NbIssues
+                                </a>
+                            </h5>
+                        </div>
+                        <div id="collapseOne" class="collapse" role="tabpanel" aria-labelledby="headingOne">
+                            <div class="card-block">
+                                @foreach (var item in Model.IssuesPerService)
+                                {
+                                    @if (item.NbIssues > 10)
+                                    {
+                                        <p text-align:left">@item.ServiceName <span class="label label-danger">@item.NbIssues</span></p>
+                                    }
+                                    else
+                                    {
+                                        <p text-align:left">@item.ServiceName <span class="label label-warning">@item.NbIssues</span></p>
+                                    }
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title"><span class="glyphicon glyphicon-copyright-mark"></span>Changesets </h3>
+            </div>            
+            <div class="panel-body">
+                <div id="accordion" role="tablist">
+                    <div class="card">
+                        <div class="card-header" role="tab" id="headingOne3">
+                            <h5 class="mb-0">
+                                <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne3" aria-expanded="true" aria-controls="collapseOne3">
+                                    Created : @Model.NbChangesets
+
+                                </a>
+                            </h5>
+                        </div>
+                        <div id="collapseOne3" class="collapse" role="tabpanel" aria-labelledby="headingOne3">
+                            <div class="card-block">
+                                @foreach (var item in Model.ChangesetPerService)
+                                {
+                                    <p text-align:left">@item.ServiceName <span class="label label-warning">@item.NbChnagesets</span></p>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title"><span class=" glyphicon glyphicon-sunglasses"></span> Code Reviews </h3>
+            </div>
+            <div class="panel-body">
+                Requested : @Model.NbCodeReviewRequested
+            </div>
+        </div>
+
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title"><span class="glyphicon glyphicon-pencil"></span> Comments</h3>
+            </div>
+            <div class="panel-body">
+                Total : @Model.NbComments
+            </div>
+        </div>
+
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title"><span class="glyphicon glyphicon-cog"></span> Builds</h3>
+            </div>
+            <div class="panel-body">
+                <div id="accordion" role="tablist">
+                    <div class="card">
+                        <div class="card-header" role="tab" id="headingOne1">
+                            <h5 class="mb-0">
+                                <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne1" aria-expanded="true" aria-controls="collapseOne1">
+                                    Total Builds: @Model.Builds.Count
+                                </a>
+                            </h5>
+                        </div>
+                        <div id="collapseOne1" class="collapse" role="tabpanel" aria-labelledby="headingOne1">
+                            <div class="card-block">
+                                <p text-align:left"> @Model.BuildFailed Builds Failed </p>
+                                <p text-align:left"> @Model.BuildPartiallySuccedeed Builds Partially Succeeded</p>
+                                <p text-align:left"> @Model.BuildSucceded Builds Succeded </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+}

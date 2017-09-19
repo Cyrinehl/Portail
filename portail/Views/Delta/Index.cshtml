@@ -78,51 +78,71 @@
 
     }
 
-    
-
-
-    <form asp-action="Index" method="get">
-        <div class="form-actions no-color">
-            <p>
-                Find by Service name: <input type="text" name="SearchString" value="@ViewData["currentFilter"]" />
-                <input type="submit" value="Search" class="btn btn-default" />
-                <a asp-action="Index">Back to Full List</a>
-            </p>
+    <br />
+<div class="row">
+    <div class="col-lg-12">
+        <div class="panel panel-success">
+            <div class="panel-heading">
+                <h3 class="panel-title"><span class="glyphicon glyphicon-search"></span> Search</h3>
+            </div>
+            <div class="panel-body">
+                <form asp-action="Index" method="get">
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <div class="input-group">
+                                <span class="input-group-addon" id="basic-addon1">Service Name</span>
+                                <input type="text" class="form-control" placeholder="Service Name" name="SearchString" value="@ViewData["currentFilter"]" aria-describedby="basic-addon1">
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="input-group">
+                                <span class="input-group-addon" id="basic-addon1">Direction Name</span>
+                                <input type="text" class="form-control" placeholder="Direction Name" name="SearchStringDirection" value="@ViewData["currentFilterDirection"]" aria-describedby="basic-addon1">
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="input-group">
+                                <span class="input-group-addon" id="basic-addon1">Team Name</span>
+                                <input type="text" class="form-control" placeholder="Team Name" name="SearchStringTeam" value="@ViewData["currentFilterTeam"]" aria-describedby="basic-addon1">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-5"></div>
+                        <div class="col-lg-6">
+                            <br />
+                            <div class="input-group">
+                                <input type="submit" value="Search" class="btn btn-default" />
+                                <input type="button" value="Back to Full List" class="btn btn-default" onclick="location.href='@Url.Action("Index", "Delta")'" /> <!--TODO : trouver comment fonctionne le asp-action sur un bouton-->
+                                @*<a asp-action="Index">Back to Full List</a>*@
+                            </div>
+                        </div>
+                        <div class="col-lg-1"></div>
+                    </div>
+                </form>
+            </div>
         </div>
-    </form>
+    </div>
+</div>
 
-
-
-    <form asp-action="Index" method="get">
-        <div class="form-actions no-color">
-            <p>
-                Find by Direction name: <input type="text" name="SearchStringDirection" value="@ViewData["currentFilterDirection"]" />
-                <input type="submit" value="Search" class="btn btn-default" />
-            </p>
-        </div>
-    </form>
-
-
-    <form asp-action="Index" method="get">
-        <div class="form-actions no-color">
-            <p>
-                Find by Direction name: <input type="text" name="SearchStringTeam" value="@ViewData["currentFilterTeam"]" />
-                <input type="submit" value="Search" class="btn btn-default" />
-            </p>
-        </div>
-    </form>
-   
-
-             
             
-            <select id="selectOpts" onchange="toto()">
-                <option value="une semaine">1 semaine</option>
-                <option value="deux semaines">2 semaines</option>
-                <option value="un mois">un mois</option>
-                <option value="un trimestre">un trimestre</option>
-            </select> 
 
-            <script type="text/javascript">
+
+
+<div class="panel panel-default">
+    <!-- Default panel contents -->
+    <div class="panel-heading"><span class="glyphicon glyphicon-th"></span> Delta</div>
+
+
+
+    @*<select id="selectOpts" onchange="toto()">
+        <option value="une semaine">1 semaine</option>
+        <option value="deux semaines">2 semaines</option>
+        <option value="un mois" >un mois</option>
+        <option value="un trimestre">un trimestre</option>
+    </select>*@
+
+    <script type="text/javascript">
                function toto() {
                    var elt = document.getElementById("selectOpts");
                    var toGet = elt.value;
@@ -135,161 +155,187 @@
                        link.dataset["href"] = link.href;
                    }
                    link.href = linkValue + "?deltaChoice=" + elt.value;
-                   
+
                }
-            
-            </script>
-         
-    
-<a asp-action="Index" id="monLien">Get Delta</a>
-       
 
-        <table border="1">
-            <thead>
+    </script>
+
+
+    @*<a asp-action="Index" id="monLien">Get Delta</a>*@
+
+
+    <div class="dropdown">
+        <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
+            Choose Delta 
+        <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu">
+            <li><a href="?deltaChoice=une semaine">une semaine</a></li>
+            <li><a href="?deltaChoice=deux semaines">2 semaines</a></li>
+            <li><a href="?deltaChoice=un mois"> 1 mois</a></li>
+            <li><a href="?deltaChoice=un trimestre">un trimestre</a></li>
+        </ul>
+    </div>
+
+
+
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    <a asp-action="Index" asp-route-sortOrder="@ViewData["NameSortParm"]" asp-route-deltaChoice="@resultDelta" asp-route-searchString="@resultSearch" asp-route-searchStringDirection="@resultSearchDirection" asp-route-searchStringTeam="@resultSearchTeam">Services</a>
+                </th>
+
+                <th>
+                    <a asp-action="Index" asp-route-sortOrder="@ViewData["DirectionSortParm"]" asp-route-deltaChoice="@resultDelta" asp-route-searchString="@resultSearch" asp-route-searchStringDirection="@resultSearchDirection" asp-route-searchStringTeam="@resultSearchTeam">Directions</a>
+                </th>
+
+                <th>
+                    <a asp-action="Index" asp-route-sortOrder="@ViewData["TeamSortParm"]" asp-route-deltaChoice="@resultDelta" asp-route-searchString="@resultSearch" asp-route-searchStringDirection="@resultSearchDirection" asp-route-searchStringTeam="@resultSearchTeam">Teams</a>
+                </th>
+                <th>
+                    Quality Profile
+                </th>
+
+                <th>
+                    <a asp-action="Index" asp-route-sortOrder="@ViewData["CoverageSortParm"]" asp-route-deltaChoice="@resultDelta" asp-route-searchString="@resultSearch" asp-route-searchStringDirection="@resultSearchDirection" asp-route-searchStringTeam="@resultSearchTeam" data-toggle="tooltip" title="Coverage">Cov.</a>
+                </th>
+
+                <th>
+                    <a asp-action="Index" asp-route-sortOrder="@ViewData["NumberLinesSortParm"]" asp-route-deltaChoice="@resultDelta" asp-route-searchString="@resultSearch" asp-route-searchStringDirection="@resultSearchDirection" asp-route-searchStringTeam="@resultSearchTeam">Lines</a>
+                </th>
+
+                <th>
+                    <a asp-action="Index" asp-route-sortOrder="@ViewData["TotalTestsSortParm"]" asp-route-deltaChoice="@resultDelta" asp-route-searchString="@resultSearch" asp-route-searchStringDirection="@resultSearchDirection" asp-route-searchStringTeam="@resultSearchTeam">Total Tests</a>
+                </th>
+
+                <th>
+                    <a asp-action="Index" asp-route-sortOrder="@ViewData["PassedTestsSortParm"]" asp-route-deltaChoice="@resultDelta" asp-route-searchString="@resultSearch" asp-route-searchStringDirection="@resultSearchDirection" asp-route-searchStringTeam="@resultSearchTeam">Passed Tests</a>
+                </th>
+
+                <th>
+                    <a asp-action="Index" asp-route-sortOrder="@ViewData["BugsSortParm"]" asp-route-deltaChoice="@resultDelta" asp-route-searchString="@resultSearch" asp-route-searchStringDirection="@resultSearchDirection" asp-route-searchStringTeam="@resultSearchTeam">Bugs</a>
+                </th>
+
+                <th>
+                    <a asp-action="Index" asp-route-sortOrder="@ViewData["CodeSmellsSortParm"]" asp-route-deltaChoice="@resultDelta" asp-route-searchString="@resultSearch" asp-route-searchStringDirection="@resultSearchDirection" asp-route-searchStringTeam="@resultSearchTeam">Code Smells</a>
+                </th>
+
+                <th>
+                    <a asp-action="Index" asp-route-sortOrder="@ViewData["VulnerabilitiesSortParm"]" asp-route-deltaChoice="@resultDelta" asp-route-searchString="@resultSearch" asp-route-searchStringDirection="@resultSearchDirection" asp-route-searchStringTeam="@resultSearchTeam" data-toggle="tooltip" title="Vulnerability">Vuls</a>
+                </th>
+
+                <th>
+                    <a asp-action="Index" asp-route-sortOrder="@ViewData["DuplicationSortParm"]" asp-route-deltaChoice="@resultDelta" asp-route-searchString="@resultSearch" asp-route-searchStringDirection="@resultSearchDirection" asp-route-searchStringTeam="@resultSearchTeam" data-toggle="tooltip" title="Duplication">Dup.</a>
+                </th>
+
+                <th>
+                    <a asp-action="Index" asp-route-sortOrder="@ViewData["ComplexitySortParm"]" asp-route-deltaChoice="@resultDelta" asp-route-searchString="@resultSearch" asp-route-searchStringDirection="@resultSearchDirection" asp-route-searchStringTeam="@resultSearchTeam" data-toggle="tooltip" title="Complexity">Comp.</a>
+                </th>
+
+                <th>
+                    <a asp-action="Index" asp-route-sortOrder="@ViewData["DocumentationSortParm"]" asp-route-deltaChoice="@resultDelta" asp-route-searchString="@resultSearch" asp-route-searchStringDirection="@resultSearchDirection" asp-route-searchStringTeam="@resultSearchTeam" data-toggle="tooltip" title="Documentation">Doc.</a>
+                </th>
+
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+
                 <tr>
-                    <th>
-                        <a asp-action="Index" asp-route-sortOrder="@ViewData["NameSortParm"]" asp-route-deltaChoice="@resultDelta" asp-route-searchString="@resultSearch" asp-route-searchStringDirection="@resultSearchDirection" asp-route-searchStringTeam="@resultSearchTeam">Services</a>
-                    </th>
+                    <td>@Html.DisplayFor(modelItem => item.ServiceName)</td>
+                    <td><span class="label label-primary">@Html.DisplayFor(modelItem => item.DirectionName)</span></td>
+                    <td><span class="label label-info">@Html.DisplayFor(modelItem => item.TeamName)</span></td>
+                    <td>
+                        @if (item.ServiceProfile == "Iron")
+                        {
+                            <span class="label label-default">@Html.DisplayFor(modelItem => item.ServiceProfile)</span>
+                        }
+                        else
+                        {
+                            <span class="label label-success">@Html.DisplayFor(modelItem => item.ServiceProfile)</span>
+                        }
+                    </td>
 
-                    <th>
-                        <a asp-action="Index" asp-route-sortOrder="@ViewData["DirectionSortParm"]" asp-route-deltaChoice="@resultDelta" asp-route-searchString="@resultSearch" asp-route-searchStringDirection="@resultSearchDirection" asp-route-searchStringTeam="@resultSearchTeam">Directions</a>
-                    </th>
-
-                    <th>
-                        <a asp-action="Index" asp-route-sortOrder="@ViewData["TeamSortParm"]" asp-route-deltaChoice="@resultDelta" asp-route-searchString="@resultSearch" asp-route-searchStringDirection="@resultSearchDirection" asp-route-searchStringTeam="@resultSearchTeam">Teams</a>
-                    </th>
-                    <th>
-                        Quality Profile
-                    </th>
-
-                    <th>
-                        <a asp-action="Index" asp-route-sortOrder="@ViewData["CoverageSortParm"]" asp-route-deltaChoice="@resultDelta" asp-route-searchString="@resultSearch" asp-route-searchStringDirection="@resultSearchDirection" asp-route-searchStringTeam="@resultSearchTeam">Coverage</a>
-                    </th>
-
-                    <th>
-                        <a asp-action="Index" asp-route-sortOrder="@ViewData["NumberLinesSortParm"]" asp-route-deltaChoice="@resultDelta" asp-route-searchString="@resultSearch" asp-route-searchStringDirection="@resultSearchDirection" asp-route-searchStringTeam="@resultSearchTeam">Number of Lines</a>
-                    </th>
-
-                    <th>
-                        <a asp-action="Index" asp-route-sortOrder="@ViewData["TotalTestsSortParm"]" asp-route-deltaChoice="@resultDelta" asp-route-searchString="@resultSearch" asp-route-searchStringDirection="@resultSearchDirection" asp-route-searchStringTeam="@resultSearchTeam">total Tests</a>
-                    </th>
-
-                    <th>
-                        <a asp-action="Index" asp-route-sortOrder="@ViewData["PassedTestsSortParm"]" asp-route-deltaChoice="@resultDelta" asp-route-searchString="@resultSearch" asp-route-searchStringDirection="@resultSearchDirection" asp-route-searchStringTeam="@resultSearchTeam">Passed Tests</a>
-                    </th>
-
-                    <th>
-                        <a asp-action="Index" asp-route-sortOrder="@ViewData["BugsSortParm"]" asp-route-deltaChoice="@resultDelta" asp-route-searchString="@resultSearch" asp-route-searchStringDirection="@resultSearchDirection" asp-route-searchStringTeam="@resultSearchTeam">Bugs</a>
-                    </th>
-
-                    <th>
-                        <a asp-action="Index" asp-route-sortOrder="@ViewData["CodeSmellsSortParm"]" asp-route-deltaChoice="@resultDelta" asp-route-searchString="@resultSearch" asp-route-searchStringDirection="@resultSearchDirection" asp-route-searchStringTeam="@resultSearchTeam">Code Smells</a>
-                    </th>
-
-                    <th>
-                        <a asp-action="Index" asp-route-sortOrder="@ViewData["VulnerabilitiesSortParm"]" asp-route-deltaChoice="@resultDelta" asp-route-searchString="@resultSearch" asp-route-searchStringDirection="@resultSearchDirection" asp-route-searchStringTeam="@resultSearchTeam">Vulnerabilities</a>
-                    </th>
-
-                    <th>
-                        <a asp-action="Index" asp-route-sortOrder="@ViewData["DuplicationSortParm"]" asp-route-deltaChoice="@resultDelta" asp-route-searchString="@resultSearch" asp-route-searchStringDirection="@resultSearchDirection" asp-route-searchStringTeam="@resultSearchTeam">Duplication</a>
-                    </th>
-
-                    <th>
-                        <a asp-action="Index" asp-route-sortOrder="@ViewData["ComplexitySortParm"]" asp-route-deltaChoice="@resultDelta" asp-route-searchString="@resultSearch" asp-route-searchStringDirection="@resultSearchDirection" asp-route-searchStringTeam="@resultSearchTeam">Complexity</a>
-                    </th>
-
-                    <th>
-                        <a asp-action="Index" asp-route-sortOrder="@ViewData["DocumentationSortParm"]" asp-route-deltaChoice="@resultDelta" asp-route-searchString="@resultSearch" asp-route-searchStringDirection="@resultSearchDirection" asp-route-searchStringTeam="@resultSearchTeam">Documentation</a>
-                    </th>
-
+                    <td align="right" class="@GetColor(item.Coverage)">@String.Concat(item.Coverage.ToString(), "%")</td>
+                    <td align="right">@Html.DisplayFor(modelItem => item.Size)</td>
+                    <td align="right" class="@GetColor(item.TotalTests)">@Html.DisplayFor(modelItem => item.TotalTests)</td>
+                    <td align="right" class="@GetColor(item.PassedTests)">@Html.DisplayFor(modelItem => item.PassedTests)</td>
+                    <td align="right" class="@GetColorInv(item.NumberBugs)">@Html.DisplayFor(modelItem => item.NumberBugs)</td>
+                    <td align="right" class="@GetColorInv(item.NumberCodeSmells)">@Html.DisplayFor(modelItem => item.NumberCodeSmells)</td>
+                    <td align="right" class="@GetColorInv(item.NumberVulnerabilities)">@Html.DisplayFor(modelItem => item.NumberVulnerabilities)</td>
+                    <td align="right" class="@GetColorInv(item.Duplication)">@String.Concat(item.Duplication.ToString(), "%")</td>
+                    <td align="right">@Html.DisplayFor(modelItem => item.Complexity)</td>
+                    <td align="right" class="@GetColor(item.Documentation)">@String.Concat(item.Documentation.ToString(), "%")</td>
                 </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Model)
-                {
+            }
+        </tbody>
 
-                    <tr>
-                        <td>@Html.DisplayFor(modelItem => item.ServiceName)</td>
-                        <td>@Html.DisplayFor(modelItem => item.DirectionName)</td>
-                        <td>@Html.DisplayFor(modelItem => item.TeamName)</td>
-                        <td>@Html.DisplayFor(modelItem => item.ServiceProfile)</td>
-                        <td align="right" style="background-color:@GetColor(item.Coverage)">@String.Concat(item.Coverage.ToString(), "%")</td>
-                        <td align="right">@Html.DisplayFor(modelItem => item.Size)</td>
-                        <td align="right" style="background-color:@GetColor(item.TotalTests)">@Html.DisplayFor(modelItem => item.TotalTests)</td>
-                        <td align="right" style="background-color:@GetColor(item.PassedTests)">@Html.DisplayFor(modelItem => item.PassedTests)</td>
-                        <td align="right" style="background-color:@GetColorInv(item.NumberBugs)">@Html.DisplayFor(modelItem => item.NumberBugs)</td>
-                        <td align="right" style="background-color:@GetColorInv(item.NumberCodeSmells)">@Html.DisplayFor(modelItem => item.NumberCodeSmells)</td>
-                        <td align="right" style="background-color:@GetColorInv(item.NumberVulnerabilities)">@Html.DisplayFor(modelItem => item.NumberVulnerabilities)</td>
-                        <td align="right" style="background-color:@GetColorInv(item.Duplication)">@String.Concat(item.Duplication.ToString(), "%")</td>
-                        <td align="right">@Html.DisplayFor(modelItem => item.Complexity)</td>
-                        <td align="right" style="background-color:@GetColor(item.Documentation)">@String.Concat(item.Documentation.ToString(), "%")</td>
-                    </tr>
-                }
-            </tbody>
-
-        </table>
+    </table>
 
 
+</div>
 
 
+    <a asp-action="Index"
+       asp-route-deltaChoice="@resultDelta"
+       asp-route-searchString="@resultSearch"
+       asp-route-searchStringDirection="@resultSearchDirection"
+       asp-route-searchStringTeam="@resultSearchTeam"
+       asp-route-sortOrder="@result"
+       asp-route-page="@((int)ViewData["PageIndex"] - 1)"
+       class="btn btn-default @prevDisabled">
+        Previous
+    </a>
 
-        <a asp-action="Index"
-           asp-route-deltaChoice="@resultDelta"
-           asp-route-searchString="@resultSearch"
-           asp-route-searchStringDirection="@resultSearchDirection"
-           asp-route-searchStringTeam="@resultSearchTeam"
-           asp-route-sortOrder="@result"
-           asp-route-page="@((int)ViewData["PageIndex"] - 1)"
-           class="btn btn-default @prevDisabled">
-            Previous
-        </a>
-
-        <a asp-action="Index"
-           asp-route-deltaChoice="@resultDelta"
-           asp-route-searchString="@resultSearch"
-           asp-route-searchStringDirection="@resultSearchDirection"
-           asp-route-searchStringTeam="@resultSearchTeam"
-           asp-route-sortOrder="@result"
-           asp-route-page="@((int)ViewData["PageIndex"] + 1)"
-           class="btn btn-default @nextDisabled ">
-            Next
-        </a>
+    <a asp-action="Index"
+       asp-route-deltaChoice="@resultDelta"
+       asp-route-searchString="@resultSearch"
+       asp-route-searchStringDirection="@resultSearchDirection"
+       asp-route-searchStringTeam="@resultSearchTeam"
+       asp-route-sortOrder="@result"
+       asp-route-page="@((int)ViewData["PageIndex"] + 1)"
+       class="btn btn-default @nextDisabled ">
+        Next
+    </a>
 
 
 
 
 
 
-@functions{
+    @functions{
 
-    public string GetColor(decimal dec)
-    {
-        string Color = null;
-
-        if (dec > 0)
+        public string GetColor(decimal dec)
         {
-            Color = "green";
+            string Color = null;
+
+            if (dec > 0)
+            {
+                Color = "alert alert-success";
+            }
+            if (dec < 0)
+            {
+                Color = "alert alert-danger";
+            }
+            return Color;
         }
-        if (dec < 0)
+
+        public string GetColorInv(decimal dec)
         {
-            Color = "red";
+            string Color = null;
+
+            if (dec > 0)
+            {
+                Color = "alert alert-danger";
+            }
+            if (dec < 0)
+            {
+                Color = "alert alert-success";
+            }
+            return Color;
         }
-        return Color;
+
     }
-
-    public string GetColorInv(decimal dec)
-    {
-        string Color = null;
-
-        if (dec > 0)
-        {
-            Color = "red";
-        }
-        if (dec < 0)
-        {
-            Color = "green";
-        }
-        return Color;
-    }
-
-}  

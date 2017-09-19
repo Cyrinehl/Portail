@@ -73,131 +73,153 @@
 
 
     }
-
-
-
-
-    <form asp-action="Index" method="get">
-        <div class="form-actions no-color">
-            <p>
-                Find by Service name: <input type="text" name="SearchString" value="@ViewData["currentFilter"]" />
-                <input type="submit" value="Search" class="btn btn-default" /> 
-                <a asp-action="Index">Back to Full List</a>            
-            </p>
+    <br/>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="panel panel-success">
+                <div class="panel-heading">
+                    <h3 class="panel-title"><span class="glyphicon glyphicon-search"></span> Search</h3>
+                </div>
+                <div class="panel-body">
+                    <form asp-action="Index" method="get">
+                        <div class="row">
+                            <div class="col-lg-4">
+                                <div class="input-group">
+                                    <span class="input-group-addon" id="basic-addon1">Service Name</span>
+                                    <input type="text" class="form-control" placeholder="Service Name" name="SearchString" value="@ViewData["currentFilter"]" aria-describedby="basic-addon1">
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="input-group">
+                                    <span class="input-group-addon" id="basic-addon1">Direction Name</span>
+                                    <input type="text" class="form-control" placeholder="Direction Name" name="SearchStringDirection" value="@ViewData["currentFilterDirection"]" aria-describedby="basic-addon1">
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="input-group">
+                                    <span class="input-group-addon" id="basic-addon1">Team Name</span>
+                                    <input type="text" class="form-control" placeholder="Team Name" name="SearchStringTeam" value="@ViewData["currentFilterTeam"]" aria-describedby="basic-addon1">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-5"></div>
+                            <div class="col-lg-6">
+                                <br/>
+                                <div class="input-group">
+                                    <input type="submit" value="Search" class="btn btn-default" />
+                                    <input type="button" value="Back to Full List" class="btn btn-default"  onclick="location.href='@Url.Action("Index", "Metric")'" /> <!--TODO : trouver comment fonctionne le asp-action sur un bouton-->
+                                    @*<a asp-action="Index">Back to Full List</a>*@
+                                </div>
+                            </div>
+                            <div class="col-lg-1"></div>
+                        </div>
+                    </form>
+                </div>
+            </div>
         </div>
-    </form>
+    </div>
 
-    
-    
-    <form asp-action="Index" method="get">
-        <div class="form-actions no-color">
-            <p>
-                Find by Direction name: <input type="text" name="SearchStringDirection" value="@ViewData["currentFilterDirection"]" />
-                <input type="submit" value="Search" class="btn btn-default" />
-            </p>
-        </div>
-    </form>
-    
+    <div class="panel panel-default">
+        <!-- Default panel contents -->
+        <div class="panel-heading"><span class="glyphicon glyphicon-th"></span> Metric</div>
 
-    <form asp-action="Index" method="get">
-        <div class="form-actions no-color">
-            <p>
-                Find by Team name: <input type="text" name="SearchStringTeam" value="@ViewData["currentFilterTeam"]" />
-                <input type="submit" value="Search" class="btn btn-default" />
-            </p>
-        </div>
-    </form>
-        
-       
-        <table border="1">
+        <!-- Table -->
+        <table class="table">
             <thead>
                 <tr>
                     <th>
-                        <a asp-action="Index" asp-route-sortOrder="@ViewData["NameSortParm"]" asp-route-searchString="@resultSearch"  asp-route-searchStringDirection="@resultSearchDirection"   asp-route-searchStringTeam ="@resultSearchTeam"  >Services</a>
+                        <a asp-action="Index" asp-route-sortOrder="@ViewData["NameSortParm"]" asp-route-searchString="@resultSearch" asp-route-searchStringDirection="@resultSearchDirection" asp-route-searchStringTeam="@resultSearchTeam">Services</a>
                     </th>
-                    
+
                     <th>
-                        <a asp-action="Index" asp-route-sortOrder="@ViewData["DirectionSortParm"]" asp-route-searchString="@resultSearch"  asp-route-searchStringDirection="@resultSearchDirection" asp-route-searchStringTeam ="@resultSearchTeam"       >Directions</a>
+                        <a asp-action="Index" asp-route-sortOrder="@ViewData["DirectionSortParm"]" asp-route-searchString="@resultSearch" asp-route-searchStringDirection="@resultSearchDirection" asp-route-searchStringTeam="@resultSearchTeam">Directions</a>
                     </th>
-                    
+
                     <th>
-                        <a asp-action="Index" asp-route-sortOrder="@ViewData["TeamSortParm"]"  asp-route-searchString="@resultSearch" asp-route-searchStringDirection="@resultSearchDirection" asp-route-searchStringTeam ="@resultSearchTeam"        >Teams</a>
+                        <a asp-action="Index" asp-route-sortOrder="@ViewData["TeamSortParm"]" asp-route-searchString="@resultSearch" asp-route-searchStringDirection="@resultSearchDirection" asp-route-searchStringTeam="@resultSearchTeam">Teams</a>
                     </th>
                     <th>
                         Quality Profile
                     </th>
 
-                    <th >
-                        <a asp-action="Index" asp-route-sortOrder="@ViewData["CoverageSortParm"]"    asp-route-searchString="@resultSearch" asp-route-searchStringDirection="@resultSearchDirection"  asp-route-searchStringTeam ="@resultSearchTeam"        >Coverage</a>
-                    </th>
-                   
                     <th>
-                        <a asp-action="Index" asp-route-sortOrder="@ViewData["NumberLinesSortParm"]"  asp-route-searchString="@resultSearch" asp-route-searchStringDirection="@resultSearchDirection"  asp-route-searchStringTeam ="@resultSearchTeam"       >Number of Lines</a>
+                        <a asp-action="Index" asp-route-sortOrder="@ViewData["CoverageSortParm"]" asp-route-searchString="@resultSearch" asp-route-searchStringDirection="@resultSearchDirection" asp-route-searchStringTeam="@resultSearchTeam"data-toggle="tooltip" title="Coverage">Cov.</a>
                     </th>
-                    
+
                     <th>
-                        <a asp-action="Index" asp-route-sortOrder="@ViewData["TotalTestsSortParm"]" asp-route-searchString="@resultSearch" asp-route-searchStringDirection="@resultSearchDirection" asp-route-searchStringTeam ="@resultSearchTeam"        >total Tests</a>
+                        <a asp-action="Index" asp-route-sortOrder="@ViewData["NumberLinesSortParm"]" asp-route-searchString="@resultSearch" asp-route-searchStringDirection="@resultSearchDirection" asp-route-searchStringTeam="@resultSearchTeam">Lines</a>
                     </th>
-                    
+
                     <th>
-                        <a asp-action="Index" asp-route-sortOrder="@ViewData["PassedTestsSortParm"]" asp-route-searchString="@resultSearch"  asp-route-searchStringDirection="@resultSearchDirection"  asp-route-searchStringTeam ="@resultSearchTeam"      >Passed Tests</a>
+                        <a asp-action="Index" asp-route-sortOrder="@ViewData["TotalTestsSortParm"]" asp-route-searchString="@resultSearch" asp-route-searchStringDirection="@resultSearchDirection" asp-route-searchStringTeam="@resultSearchTeam">Passed / Total Tests</a>
                     </th>
-                    
+
                     <th>
-                        <a asp-action="Index" asp-route-sortOrder="@ViewData["BugsSortParm"]" asp-route-searchString="@resultSearch"  asp-route-searchStringDirection="@resultSearchDirection" asp-route-searchStringTeam ="@resultSearchTeam"    >Bugs</a>
+                        <a asp-action="Index" asp-route-sortOrder="@ViewData["BugsSortParm"]" asp-route-searchString="@resultSearch" asp-route-searchStringDirection="@resultSearchDirection" asp-route-searchStringTeam="@resultSearchTeam">Bugs</a>
                     </th>
-                    
+
                     <th>
-                        <a asp-action="Index" asp-route-sortOrder="@ViewData["CodeSmellsSortParm"]" asp-route-searchString="@resultSearch"  asp-route-searchStringDirection="@resultSearchDirection" asp-route-searchStringTeam ="@resultSearchTeam"    >Code Smells</a>
+                        <a asp-action="Index" asp-route-sortOrder="@ViewData["CodeSmellsSortParm"]" asp-route-searchString="@resultSearch" asp-route-searchStringDirection="@resultSearchDirection" asp-route-searchStringTeam="@resultSearchTeam">Code Smells</a>
                     </th>
-                    
+
                     <th>
-                        <a asp-action="Index" asp-route-sortOrder="@ViewData["VulnerabilitiesSortParm"]" asp-route-searchString="@resultSearch"  asp-route-searchStringDirection="@resultSearchDirection" asp-route-searchStringTeam ="@resultSearchTeam"    >Vulnerabilities</a>
+                        <a asp-action="Index" asp-route-sortOrder="@ViewData["VulnerabilitiesSortParm"]" asp-route-searchString="@resultSearch" asp-route-searchStringDirection="@resultSearchDirection" asp-route-searchStringTeam="@resultSearchTeam"data-toggle="tooltip" title="Vulnerabilites">Vuls</a>
                     </th>
-                    
+
                     <th>
-                        <a asp-action="Index" asp-route-sortOrder="@ViewData["DuplicationSortParm"]" asp-route-searchString="@resultSearch"  asp-route-searchStringDirection="@resultSearchDirection" asp-route-searchStringTeam ="@resultSearchTeam"       >Duplication</a>
+                        <a asp-action="Index" asp-route-sortOrder="@ViewData["DuplicationSortParm"]" asp-route-searchString="@resultSearch" asp-route-searchStringDirection="@resultSearchDirection" asp-route-searchStringTeam="@resultSearchTeam"data-toggle="tooltip" title="Duplication">Dup.</a>
                     </th>
-                   
+
                     <th>
-                    <a asp-action="Index" asp-route-sortOrder="@ViewData["ComplexitySortParm"]" asp-route-searchString="@resultSearch" asp-route-searchStringDirection="@resultSearchDirection" asp-route-searchStringTeam ="@resultSearchTeam"        >Complexity</a>
+                        <a asp-action="Index" asp-route-sortOrder="@ViewData["ComplexitySortParm"]" asp-route-searchString="@resultSearch" asp-route-searchStringDirection="@resultSearchDirection" asp-route-searchStringTeam="@resultSearchTeam"data-toggle="tooltip" title="Complexity">Comp.</a>
                     </th>
-                    
+
                     <th>
-                    <a asp-action="Index" asp-route-sortOrder="@ViewData["DocumentationSortParm"]" asp-route-searchString="@resultSearch" asp-route-searchStringDirection="@resultSearchDirection"  asp-route-searchStringTeam ="@resultSearchTeam"       >Documentation</a>
+                        <a asp-action="Index" asp-route-sortOrder="@ViewData["DocumentationSortParm"]" asp-route-searchString="@resultSearch" asp-route-searchStringDirection="@resultSearchDirection" asp-route-searchStringTeam="@resultSearchTeam" data-toggle="tooltip" title="Documentation">Doc.</a>
                     </th>
-                  
-                </tr>               
+
+                </tr>
             </thead>
             <tbody>
                 @foreach (var item in Model)
                 {
 
-                    
 
-                <tr>
-                    <td>@Html.DisplayFor(modelItem => item.ServiceName)</td>
-                    <td>@Html.DisplayFor(modelItem => item.DirectionName)</td>
-                    <td>@Html.DisplayFor(modelItem => item.TeamName)</td>
-                    <td>@Html.DisplayFor(modelItem => item.ServiceProfile)</td>
-                    <td align="right">@String.Concat(item.Coverage.ToString(), "%")</td>
-                    <td align="right">@Html.DisplayFor(modelItem => item.Size)</td>
-                    <td align="right">@Html.DisplayFor(modelItem => item.TotalTests)</td>
-                    <td align="right">@Html.DisplayFor(modelItem => item.PassedTests)</td>
-                    <td align="right">@Html.DisplayFor(modelItem => item.NumberBugs)</td>
-                    <td align="right">@Html.DisplayFor(modelItem => item.NumberCodeSmells)</td>
-                    <td align="right">@Html.DisplayFor(modelItem => item.NumberVulnerabilities)</td>
-                    <td align="right">@String.Concat(item.Duplication.ToString(), "%")</td>
-                    <td align="right">@Html.DisplayFor(modelItem => item.Complexity)</td>
-                    <td align="right">@String.Concat(item.Documentation.ToString(), "%")</td>
-                </tr>
+
+                    <tr>
+                        <td>@Html.DisplayFor(modelItem => item.ServiceName)@if (item.NumberVulnerabilities != 0)
+                        { <span class="badge alert-danger">@item.NumberVulnerabilities </span> }</td>
+                        <td><span class="label label-primary">@Html.DisplayFor(modelItem => item.DirectionName)</span></td>
+                        <td><span class="label label-info">@Html.DisplayFor(modelItem => item.TeamName)</span></td>
+                        <td>
+                            @if (item.ServiceProfile == "Iron")
+                            {
+                                <span class="label label-default">@Html.DisplayFor(modelItem => item.ServiceProfile)</span>
+                            }
+                            else
+                            {
+                                <span class="label label-success">@Html.DisplayFor(modelItem => item.ServiceProfile)</span>
+                            }
+                        </td>
+                        <td align="right">@String.Concat(item.Coverage.ToString(), "%")</td>
+                        <td align="right">@Html.DisplayFor(modelItem => item.Size)</td>
+                        <td align="right" class="@GetColor(item.PassedTests, item.TotalTests)">@Html.DisplayFor(modelItem => item.PassedTests) / @Html.DisplayFor(modelItem => item.TotalTests)</td>
+                        <td align="right">@Html.DisplayFor(modelItem => item.NumberBugs)</td>
+                        <td align="right">@Html.DisplayFor(modelItem => item.NumberCodeSmells)</td>
+                        <td align="right" class="@ColorVuln(item.NumberVulnerabilities)">@Html.DisplayFor(modelItem => item.NumberVulnerabilities)</td>
+                        <td align="right">@String.Concat(item.Duplication.ToString(), "%")</td>
+                        <td align="right">@Html.DisplayFor(modelItem => item.Complexity)</td>
+                        <td align="right">@String.Concat(item.Documentation.ToString(), "%")</td>
+                    </tr>
                 }
             </tbody>
 
         </table>
-
-   
-   
+    </div>
+        
+       
+    
 
 
     <a asp-action="Index"     
@@ -235,4 +257,42 @@
     
 
 </div>
+
+
+@functions{
+
+    public string GetColor(int PTests, int TTests)
+    {
+        string Color = null;
+
+        if (PTests == TTests && TTests !=0 )
+        {
+            Color = "alert alert-success";
+        }
+        else if(TTests == 0)
+        {
+            Color = "alert alert-info";
+        }
+        else
+        {
+            Color = "alert alert-danger";
+
+        }
+        return Color;
+    }
+
+    public string ColorVuln(int vul)
+    {
+        string color = null;
+        if (vul != 0)
+        {
+
+            color = "alert alert-danger";
+        }
+
+        return color;
+    }
+
+}
+
 
