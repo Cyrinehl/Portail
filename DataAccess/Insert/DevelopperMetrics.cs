@@ -24,6 +24,7 @@ namespace DataAccess.Insert
         public int BuildFailed { get; set; }
         public int BuildSucceded { get; set; }
         public int BuildPartiallySuccedeed { get; set; }
+        public int BuildCancelled { get; set; }
     }
 
 }

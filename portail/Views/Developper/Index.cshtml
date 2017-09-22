@@ -49,7 +49,7 @@
                         <div class="card-header" role="tab" id="headingOne">
                             <h5 class="mb-0">
                                 <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                                    Total : @Model.NbIssues
+                                    Created : @Model.NbIssues
                                 </a>
                             </h5>
                         </div>
@@ -75,8 +75,8 @@
 
         <div class="panel panel-info">
             <div class="panel-heading">
-                <h3 class="panel-title"><span class="glyphicon glyphicon-copyright-mark"></span>Changesets </h3>
-            </div>            
+                <h3 class="panel-title"><span class="glyphicon glyphicon-copyright-mark"></span> Changesets </h3>
+            </div>
             <div class="panel-body">
                 <div id="accordion" role="tablist">
                     <div class="card">
@@ -90,10 +90,32 @@
                         </div>
                         <div id="collapseOne3" class="collapse" role="tabpanel" aria-labelledby="headingOne3">
                             <div class="card-block">
-                                @foreach (var item in Model.ChangesetPerService)
-                                {
-                                    <p text-align:left">@item.ServiceName <span class="label label-warning">@item.NbChnagesets</span></p>
-                                }
+
+                                    <div class="row">
+                                        <div class="col-lg-6">
+                                            <table class="table">
+                                                <thead>
+                                                    <tr>
+                                                        <th>
+                                                            Services
+                                                        </th>
+                                                        <th> Files </th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @foreach (var item in Model.ChangesetPerService)
+                                                    {
+                                                        <tr>
+                                                            <td>@item.ServiceName</td>
+                                                            <td>@item.NbChnagesets</td>
+                                                        </tr>
+                                                    }
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <div class="col-lg-6"></div>
+                                    </div>
+                              
                             </div>
                         </div>
                     </div>
@@ -116,7 +138,7 @@
                 <h3 class="panel-title"><span class="glyphicon glyphicon-pencil"></span> Comments</h3>
             </div>
             <div class="panel-body">
-                Total : @Model.NbComments
+                Received : @Model.NbComments
             </div>
         </div>
 
@@ -130,15 +152,16 @@
                         <div class="card-header" role="tab" id="headingOne1">
                             <h5 class="mb-0">
                                 <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne1" aria-expanded="true" aria-controls="collapseOne1">
-                                    Total Builds: @Model.Builds.Count
+                                    Run : @Model.Builds.Count
                                 </a>
                             </h5>
                         </div>
                         <div id="collapseOne1" class="collapse" role="tabpanel" aria-labelledby="headingOne1">
                             <div class="card-block">
-                                <p text-align:left"> @Model.BuildFailed Builds Failed </p>
-                                <p text-align:left"> @Model.BuildPartiallySuccedeed Builds Partially Succeeded</p>
-                                <p text-align:left"> @Model.BuildSucceded Builds Succeded </p>
+                                <p text-align:left"> @Model.BuildFailed Builds <span class="label label-danger"> Failed</span> </p>
+                                <p text-align:left"> @Model.BuildPartiallySuccedeed Builds <span class="label label-warning"> Partially Succeeded</span> </p>
+                                <p text-align:left"> @Model.BuildSucceded Builds <span class="label label-success">Succeded </span> </p>
+                                <p text-align:left"> @Model.BuildCancelled Builds <span class="label label-default">Cancelled </span> </p>
                             </div>
                         </div>
                     </div>

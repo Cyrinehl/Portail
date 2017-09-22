@@ -192,6 +192,7 @@ namespace DataAccess.Insert
             DevelopperMetrics.BuildFailed = DevelopperMetrics.Builds.FindAll(x => x.Result.Equals("failed")).Count;
             DevelopperMetrics.BuildPartiallySuccedeed = DevelopperMetrics.Builds.FindAll(x => x.Result.Equals("partiallySucceeded")).Count;
             DevelopperMetrics.BuildSucceded = DevelopperMetrics.Builds.FindAll(x => x.Result.Equals("succeeded")).Count;
+            DevelopperMetrics.BuildCancelled = DevelopperMetrics.Builds.FindAll(x => x.Result.Equals("canceled")).Count;
 
             while (readerIDs.Read())
             {
